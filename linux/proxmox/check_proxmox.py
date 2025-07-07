@@ -30,34 +30,33 @@ def checkmetric(metric,curvalue,warn=None,crit=None):
     returndata['exitcode'] = 6
     returndata['perfdata'] = ''
     returndata['uom'] = 'unknown'
-
-    match metric:
-        case 'cpu' | 'iowait':
-            returndata['uom'] = 'pct'
-            curvalue = round(curvalue * 100, ndigits=2)
-        case 'mem' | 'memused':
-            returndata['uom'] = 'mebibytes'
-            curvalue = round(curvalue / 1024 / 1024, ndigits=2)
-        case 'netin':
-            returndata['uom'] = 'kibibytes_in'
-            curvalue = round(curvalue / 1024, ndigits=2)
-        case 'netout':
-            returndata['uom'] = 'kibibytes_out'
-            curvalue = round(curvalue / 1024, ndigits=2)
-        case 'swapused':
-            returndata['uom'] = 'mebibytes_used_swap'
-            curvalue = round(curvalue / 1024 / 1024, ndigits=2)
-        case 'loadavg':
-            returndata['uom'] = 'load_avg'
-        case 'rootused':
-            returndata['uom'] = 'mebibytes_used_root'
-            curvalue = round(curvalue / 1024 / 1024, ndigits=2)
-        case 'diskread':
-            returndata['uom'] = 'mebibytes_read'
-            curvalue = round(curvalue / 1024 / 1024, ndigits=2)
-        case 'diskwrite':
-            returndata['uom'] = 'mebibytes_write'
-            curvalue = round(curvalue / 1024 / 1024, ndigits=2)
+    
+    if metric == 'cpu' or metric == 'iowait':
+        returndata['uom'] = 'pct'
+        curvalue = round(curvalue * 100, ndigits=2)
+    elif metric == 'mem' or metric == 'memused':
+        returndata['uom'] = 'mebibytes'
+        curvalue = round(curvalue / 1024 / 1024, ndigits=2)
+    elif metric == 'netin':
+        returndata['uom'] = 'kibibytes_in'
+        curvalue = round(curvalue / 1024, ndigits=2)
+    elif metric == 'netout':
+        returndata['uom'] = 'kibibytes_out'
+        curvalue = round(curvalue / 1024, ndigits=2)
+    elif metric == 'swapused':
+        returndata['uom'] = 'mebibytes_used_swap'
+        curvalue = round(curvalue / 1024 / 1024, ndigits=2)
+    elif metric == 'loadavg':
+        returndata['uom'] = 'load_avg'
+    elif metric == 'rootused':
+        returndata['uom'] = 'mebibytes_used_root'
+        curvalue = round(curvalue / 1024 / 1024, ndigits=2)
+    elif metric == 'diskread':
+        returndata['uom'] = 'mebibytes_read'
+        curvalue = round(curvalue / 1024 / 1024, ndigits=2)
+    elif metric == 'diskwrite':
+        returndata['uom'] = 'mebibytes_write'
+        curvalue = round(curvalue / 1024 / 1024, ndigits=2)
 
     if (warn is not None):
         if (curvalue > warn):
