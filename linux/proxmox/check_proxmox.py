@@ -6,12 +6,12 @@ import argparse
 
 class checkproxmoxapi:
     
-    def __init__(self, proxmoxip, proxmoxport, apitoken, oauthname, user):
+    def __init__(self, proxmoxip, proxmoxport, apitoken, authname, user):
         self.proxbaseurl = 'https://{0}:{1}/api2/json/'.format(proxmoxip, proxmoxport)
         self.apitoken = apitoken
-        self.oauthname = oauthname
+        self.authname = authname
         self.user = user
-        self.headers = {'Content-Type': 'x-www-form-urlencoded','Authorization': "PVEAPIToken={0}!{1}={2}".format(self.user, self.oauthname, self.apitoken)}
+        self.headers = {'Content-Type': 'x-www-form-urlencoded','Authorization': "PVEAPIToken={0}!{1}={2}".format(self.user, self.authname, self.apitoken)}
         self.connection = None
         requests.packages.urllib3.disable_warnings()
 
@@ -86,9 +86,9 @@ def main():
 
     parser.add_argument('-H', '--host', required=True, type=str, help='The Proxmox host you wish to connect to.')
     parser.add_argument('-p', '--port', required=False, default='8006', type=str, help='The port Proxmox is listening on. Defaults to 8006 if not provided.')
-    parser.add_argument('-o', '--oauthtoken', required=True, type=str, help='OAuth token for connecting to the API.')
-    parser.add_argument('-O', '--oauthname', required=True, type=str, help='Name of OAuth token.')
-    parser.add_argument('-u', '--user', required=True, type=str, help='User associated with the OAuth token. E.g. root@pam')
+    parser.add_argument('-o', '--authtoken', required=True, type=str, help='Auth token for connecting to the API.')
+    parser.add_argument('-O', '--authname', required=True, type=str, help='Name of auth token.')
+    parser.add_argument('-u', '--user', required=True, type=str, help='User associated with the auth token. E.g. root@pam')
 
     subparsers = parser.add_subparsers(required=True, dest='toplvl', help='At which level would you like to collect metrics?')
 
@@ -116,7 +116,7 @@ def main():
 
     parsedargs = parser.parse_args(sys.argv[1:])
 
-    myprox = checkproxmoxapi(parsedargs.host, parsedargs.port, parsedargs.oauthtoken, parsedargs.oauthname, parsedargs.user)
+    myprox = checkproxmoxapi(parsedargs.host, parsedargs.port, parsedargs.authtoken, parsedargs.authname, parsedargs.user)
 
     myresults = float()
     metricdata = {}
